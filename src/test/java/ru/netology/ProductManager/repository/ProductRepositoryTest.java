@@ -28,4 +28,32 @@ public class ProductRepositoryTest {
 
         assertArrayEquals(expected, actual);
     }
+
+    @Test
+    public void shouldTryToRemoveProductFromArrayIfItemIsPresent() {
+        ProductRepository repo = new ProductRepository();
+        repo.save(product);
+        repo.save(product2);
+        repo.save(product3);
+        repo.save(product4);
+        repo.removeById(33);
+
+        Product[] expected = {product, product2, product4};
+        Product[] actual = repo.findAll();
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldTryToRemoveProductFromArrayIfItemIsNotPresent() {
+        ProductRepository repo = new ProductRepository();
+        repo.save(product);
+        repo.save(product2);
+        repo.save(product3);
+        repo.save(product4);
+
+        assertThrows(NotFoundException.class, () -> {
+            repo.removeById(8);
+        });
+    }
 }
